@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "github.tdonuk"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -24,11 +24,6 @@ tasks {
     withType<JavaCompile> {
         sourceCompatibility = "8"
         targetCompatibility = "8"
-    }
-
-    patchPluginXml {
-        sinceBuild.set("221")
-        untilBuild.set("231.*")
     }
 
     signPlugin {
