@@ -5,17 +5,20 @@
 
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
-    <name>String-helper</name>
+    <name>String Helpers</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor email="support@yourcompany.com" url="https://www.yourcompany.com">YourCompany</vendor>
+    <vendor url="https://github.com/tdonuk">tdonuk</vendor>
+
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+    <h2>String Helpers</h2>
+    <p>
+        This is a simple helper plugin that allows users to perform base64 encode/decode operations simply from right click menu or via keyboard shortcuts (ctrl + alt + e by default)
+    </p>
   ]]></description>
 
     <!-- Product and plugin compatibility requirements.
@@ -27,4 +30,19 @@
     <extensions defaultExtensionNs="com.intellij">
 
     </extensions>
+
+    <actions>
+        <group id="stringHelpers" text="String Helpers" description="Some useful string toolkits" popup="true">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu"/>
+
+            <separator text="Base 64"/>
+            <action id="b64EncoderItem" class="github.tdonuk.stringhelper.Base64EncodeAction" text="Base64 Encode" description="Encodes selected string to base 64">
+                <keyboard-shortcut first-keystroke="ctrl alt e" keymap="$default"/>
+            </action>
+            <action id="b64DecoderItem" class="github.tdonuk.stringhelper.Base64DecodeAction" text="Base64 Decode" description="Decodes selected string to base 64">
+                <keyboard-shortcut first-keystroke="ctrl alt d" keymap="$default"/>
+            </action>
+        </group>
+    </actions>
 </idea-plugin>
