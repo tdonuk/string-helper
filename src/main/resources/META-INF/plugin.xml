@@ -11,7 +11,7 @@
 
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor url="https://github.com/tdonuk" email="Taha Dönük">tdonuk</vendor>
+    <vendor url="https://github.com/tdonuk">tdonuk</vendor>
 
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
