@@ -23,7 +23,7 @@ public class Base64EncodeAction extends EditorAction {
 			@Override
 			protected void doExecute(@NotNull Editor editor, @Nullable Caret caret, DataContext dataContext) {
 				final Project[] openProjects = ProjectManager.getInstance().getOpenProjects();
-				if (openProjects.length <= 0) {
+				if (openProjects.length == 0) {
 					return;
 				}
 				
@@ -38,7 +38,7 @@ public class Base64EncodeAction extends EditorAction {
 						}
 						
 						final SelectionModel selectionModel = editor.getSelectionModel();
-						document.replaceString(selectionModel.getSelectionStart(), selectionModel.getSelectionEnd(), Base64.getEncoder().encodeToString(selectedText.getBytes(StandardCharsets.UTF_8)));
+						document.replaceString(selectionModel.getSelectionStart(), selectionModel.getSelectionEnd(), Base64.getEncoder().encodeToString(selectedText.getBytes(StandardCharsets.US_ASCII)));
 					});
 				}
 			}

@@ -23,7 +23,7 @@ public class Base64DecodeAction extends EditorAction {
 			@Override
 			protected void doExecute(@NotNull Editor editor, @Nullable Caret caret, DataContext dataContext) {
 				final Project[] openProjects = ProjectManager.getInstance().getOpenProjects();
-				if (openProjects.length <= 0) {
+				if (openProjects.length == 0) {
 					return;
 				}
 				
