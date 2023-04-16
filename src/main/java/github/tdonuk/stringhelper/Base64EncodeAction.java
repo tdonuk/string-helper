@@ -10,6 +10,9 @@ import com.intellij.openapi.editor.actionSystem.EditorAction;
 import com.intellij.openapi.editor.actionSystem.EditorActionHandler;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.util.text.StringUtil;
+import github.tdonuk.stringhelper.gui.CustomDialogWrapper;
+import github.tdonuk.stringhelper.gui.DialogType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,14 +35,22 @@ public class Base64EncodeAction extends EditorAction {
 				final Document document = editor.getDocument();
 				
 				if (selectedText != null && !selectedText.isEmpty()) {
-					WriteCommandAction.runWriteCommandAction(openProjects[0], () -> {
-						if (!document.isWritable()) {
-							return;
-						}
-						
-						final SelectionModel selectionModel = editor.getSelectionModel();
-						document.replaceString(selectionModel.getSelectionStart(), selectionModel.getSelectionEnd(), Base64.getEncoder().encodeToString(selectedText.getBytes(StandardCharsets.US_ASCII)));
-					});
+					try {
+						String result = StringUtil.convertLineSeparators(Base64.getEncoder().encodeToString(selectedText.getBytes(StandardCharsets.ISO_8859_1)));
+						WriteCommandAction.runWriteCommandAction(openProjects[0], () -> {
+							if (!document.isWritable()) {
+								return;
+							}
+							
+							final SelectionModel selectionModel = editor.getSelectionModel();
+							
+							document.replaceString(selectionModel.getSelectionStart(), selectionModel.getSelectionEnd(), result);
+						});
+					} catch(Exception e) {
+						e.printStackTrace();
+						Boolean isOk = new CustomDialogWrapper("Encoding Error", "An error has occurred: " + e.getMessage(), DialogType.ERROR).showAndGet();
+					}
+
 				}
 			}
 		});
