@@ -7,7 +7,7 @@
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
     <name>String Helpers</name>
 
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
@@ -23,8 +23,7 @@
     </p>
   ]]></description>
 
-    <change-notes>
-    <![CDATA[
+    <change-notes><![CDATA[
     <p>Some bugfixes has done and error dialogs added</p>
     <ul>
         <li>
@@ -34,8 +33,7 @@
             <p>An error dialog is now showing up when unexpected exceptions happened</p>
         </li>
     </ul>
-    ]]>
-    </change-notes>
+ ]]></change-notes>
 
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->

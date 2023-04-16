@@ -4,7 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 
 public final class AppUtils {
-	public static final String VERSION = "v1.0.0";
+	public static final String VERSION = "v1.0.1";
 	private AppUtils() {}
 	
 	public static Path getPluginPath() throws Exception {
