@@ -23,7 +23,7 @@
     </p>
   ]]></description>
 
-    <idea-version since-build="*" until-build="*"/>
+    <idea-version since-build="2021.1"/>
 
     <change-notes><![CDATA[
     <p>Some bugfixes has done and error dialogs added</p>
