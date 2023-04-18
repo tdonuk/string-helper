@@ -9,10 +9,10 @@
 
     <version>1.0.1</version>
 
-
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor url="https://github.com/tdonuk">tdonuk</vendor>
 
+    <idea-version since-build="191"/>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
@@ -23,13 +23,11 @@
     </p>
   ]]></description>
 
-    <idea-version since-build="2020.1" until-build="2023.*"/>
-
     <change-notes><![CDATA[
     <p>Some bugfixes has done and error dialogs added</p>
     <ul>
         <li>
-            <p>'Wrong line seperators' error is fixed when decoding long strings like XSLT template</p>
+            <p>'Wrong line separators' error is fixed when decoding long strings like XSLT template</p>
         </li>
         <li>
             <p>An error dialog is now showing up when unexpected exceptions happened</p>
