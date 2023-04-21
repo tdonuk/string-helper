@@ -7,7 +7,7 @@
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
     <name>String Helpers</name>
 
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor url="https://github.com/tdonuk">tdonuk</vendor>
@@ -18,19 +18,53 @@
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-    <p>
-        This is a simple helper plugin that allows users to perform base64 encode/decode operations simply from right click menu or via keyboard shortcuts (ctrl + alt + e by default)
-    </p>
+    <p>This is a helper plugin to assist users in some actions. Current features are listed below:</p>
+    <ul>
+        <li>
+            <strong>Base64 Encode</strong>
+            <br/>
+            <p>Encodes the selected text into base64 and replaces the selection with encoded value</p>
+        </li>
+        <li>
+            <strong>Base64 Decode</strong>
+            <br/>
+            <p>Decodes the selected text into base64 and replaces the selection with encoded value</p>
+        </li>
+        <li>
+            <strong>Get current datetime</strong>
+            <br/>
+            <p>Copies the current date (and time) to clipboard as formatted text (dd/MM/yyyy hh:mm:ss)</p>
+        </li>
+        <li>
+            <strong>Date to epoch seconds</strong>
+            <br/>
+            <p>Parses the selected text as date and converts it to epoch seconds (parsable format: dd/MM/yyyy hh:mm:ss)</p>
+        </li>
+        <li>
+            <strong>Epoch seconds to date</strong>
+            <br/>
+            <p>Parses the selected text as epoch seconds and converts it to readable formatted text</p>
+        </li>
+    </ul>
   ]]></description>
 
     <change-notes><![CDATA[
     <p>Some bugfixes has done and error dialogs added</p>
     <ul>
         <li>
-            <p>'Wrong line separators' error is fixed when decoding long strings like XSLT template</p>
+            <strong style="color: darkgreen;">New Feature: Get current datetime</strong>
+            <br/>
+            <p>Copy the current date (and time) to clipboard as formatted text (dd/MM/yyyy hh:mm:ss)</p>
         </li>
         <li>
-            <p>An error dialog is now showing up when unexpected exceptions happened</p>
+            <strong style="color: darkgreen;">New Feature: Date to timestamp</strong>
+            <br/>
+            <p>Parse the selected date string and convert it to epoch seconds (parsable format: dd/MM/yyyy hh:mm:ss)</p>
+        </li>
+        <li>
+            <strong style="color: darkgreen;">New Feature: Epoch seconds to date</strong>
+            <br/>
+            <p>Parse the selected text as epoch seconds and convert it to readable formatted date text</p>
         </li>
     </ul>
  ]]></change-notes>
@@ -45,11 +79,24 @@
             <add-to-group group-id="EditorPopupMenu"/>
 
             <separator text="Base 64"/>
-            <action id="b64EncoderItem" class="github.tdonuk.stringhelper.Base64EncodeAction" text="Base64 Encode" description="Encode selected string to base 64">
+            <action id="b64EncoderItem" class="github.tdonuk.stringhelper.action.b64.Base64EncodeAction" text="Base64 Encode" description="Encode selected string to base 64">
                 <keyboard-shortcut first-keystroke="ctrl alt e" keymap="$default"/>
             </action>
-            <action id="b64DecoderItem" class="github.tdonuk.stringhelper.Base64DecodeAction" text="Base64 Decode" description="Decode selected string to base 64">
+            <action id="b64DecoderItem" class="github.tdonuk.stringhelper.action.b64.Base64DecodeAction" text="Base64 Decode" description="Decode selected string to base 64">
                 <keyboard-shortcut first-keystroke="ctrl alt d" keymap="$default"/>
+            </action>
+
+            <separator/>
+
+            <separator text="Time"/>
+            <action id="timeStampToDateItem" class="github.tdonuk.stringhelper.action.time.TimestampToDateAction" text="Timestamp to Date" description="Datetime value of instant">
+
+            </action>
+            <action id="dateToTimestampAction" class="github.tdonuk.stringhelper.action.time.DateToTimestampAction" text="Date to timestamp" description="Instant value of a datetime">
+
+            </action>
+            <action id="getCurrentTimeAction" class="github.tdonuk.stringhelper.action.time.GetCurrentTimeAction" text="Current datetime" description="Get current datetime value">
+
             </action>
         </group>
     </actions>

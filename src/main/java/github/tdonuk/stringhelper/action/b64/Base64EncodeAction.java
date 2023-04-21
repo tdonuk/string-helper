@@ -1,4 +1,4 @@
-package github.tdonuk.stringhelper;
+package github.tdonuk.stringhelper.action.b64;
 
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.command.WriteCommandAction;
@@ -19,9 +19,9 @@ import org.jetbrains.annotations.Nullable;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-public class Base64DecodeAction extends EditorAction {
+public class Base64EncodeAction extends EditorAction {
 	
-	public Base64DecodeAction() {
+	public Base64EncodeAction() {
 		super(new EditorActionHandler() {
 			@Override
 			protected void doExecute(@NotNull Editor editor, @Nullable Caret caret, DataContext dataContext) {
@@ -36,7 +36,7 @@ public class Base64DecodeAction extends EditorAction {
 				
 				if (selectedText != null && !selectedText.isEmpty()) {
 					try {
-						String result = StringUtil.convertLineSeparators(new String(Base64.getDecoder().decode(selectedText.getBytes(StandardCharsets.UTF_8))));
+						String result = StringUtil.convertLineSeparators(Base64.getEncoder().encodeToString(selectedText.getBytes(StandardCharsets.ISO_8859_1)));
 						WriteCommandAction.runWriteCommandAction(openProjects[0], () -> {
 							if (!document.isWritable()) {
 								return;
@@ -47,16 +47,16 @@ public class Base64DecodeAction extends EditorAction {
 							document.replaceString(selectionModel.getSelectionStart(), selectionModel.getSelectionEnd(), result);
 						});
 					} catch(Exception e) {
-						Boolean isOk = new CustomDialogWrapper("Decoding Error", "An error has occurred: " + e.getMessage(), DialogType.ERROR).showAndGet();
 						e.printStackTrace();
+						Boolean isOk = new CustomDialogWrapper("Encoding Error", "An error has occurred: " + e.getMessage(), DialogType.ERROR).showAndGet();
 					}
-					
+
 				}
 			}
 		});
 	}
 	
-	protected Base64DecodeAction(EditorActionHandler defaultHandler) {
+	protected Base64EncodeAction(EditorActionHandler defaultHandler) {
 		super(defaultHandler);
 	}
 }
