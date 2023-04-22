@@ -7,7 +7,7 @@
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
     <name>String Helpers</name>
 
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor url="https://github.com/tdonuk">tdonuk</vendor>
@@ -45,6 +45,11 @@
             <br/>
             <p>Parses the selected text as epoch seconds and converts it to readable formatted text</p>
         </li>
+        <li>
+            <strong>Json extract</strong>
+            <br/>
+            <p>Writes an example Json request string by declared fields in a class</p>
+        </li>
     </ul>
   ]]></description>
 
@@ -52,19 +57,9 @@
     <p>Some bugfixes has done and error dialogs added</p>
     <ul>
         <li>
-            <strong style="color: darkgreen;">New Feature: Get current datetime</strong>
+            <strong style="color: darkgreen;">New Feature:Json extract</strong>
             <br/>
-            <p>Copy the current date (and time) to clipboard as formatted text (dd/MM/yyyy hh:mm:ss)</p>
-        </li>
-        <li>
-            <strong style="color: darkgreen;">New Feature: Date to timestamp</strong>
-            <br/>
-            <p>Parse the selected date string and convert it to epoch seconds (parsable format: dd/MM/yyyy hh:mm:ss)</p>
-        </li>
-        <li>
-            <strong style="color: darkgreen;">New Feature: Epoch seconds to date</strong>
-            <br/>
-            <p>Parse the selected text as epoch seconds and convert it to readable formatted date text</p>
+            <p>Writes an example Json request string by declared fields in a class</p>
         </li>
     </ul>
  ]]></change-notes>
@@ -72,6 +67,7 @@
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
 
     <actions>
         <group id="stringHelpers" text="String Helpers" description="Some useful string toolkits" popup="true">
@@ -96,6 +92,13 @@
 
             </action>
             <action id="getCurrentTimeAction" class="github.tdonuk.stringhelper.action.time.GetCurrentTimeAction" text="Current datetime" description="Get current datetime value">
+
+            </action>
+
+            <separator/>
+
+            <separator text="Json"/>
+            <action id="extractJsonAction" class="github.tdonuk.stringhelper.action.json.ExtractJsonBodyAction" text="Extract Json" description="Create initial Json body with initial values">
 
             </action>
         </group>

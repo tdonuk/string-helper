@@ -6,10 +6,15 @@ plugins {
 }
 
 group = "github.tdonuk"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     mavenCentral()
+}
+
+dependencies {
+    // Other dependencies
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2")
 }
 
 // Configure Gradle IntelliJ Plugin
@@ -18,7 +23,7 @@ intellij {
     version.set("2023.1")
     type.set("IC") // Target IDE Platform
 
-    plugins.set(listOf(/* Plugin Dependencies */))
+    plugins.set(listOf("com.intellij.java"))
 
     updateSinceUntilBuild.set(false);
 }
