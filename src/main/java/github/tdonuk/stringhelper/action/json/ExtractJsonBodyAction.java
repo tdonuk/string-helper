@@ -21,6 +21,7 @@ import com.intellij.psi.impl.source.PsiClassReferenceType;
 import com.intellij.psi.util.PsiTreeUtil;
 import github.tdonuk.stringhelper.gui.CustomDialogWrapper;
 import github.tdonuk.stringhelper.gui.DialogType;
+import github.tdonuk.stringhelper.gui.SimplePopupMessage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,24 +67,7 @@ public class ExtractJsonBodyAction extends EditorAction {
 
                     String result = writer.toString();
 
-                    JPanel panel = new JPanel(new BorderLayout());
-
-                    JTextArea textArea = new JTextArea();
-                    textArea.append(result);
-
-                    JButton closeButton = new JButton("Close");
-                    closeButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-                    panel.add(textArea, BorderLayout.CENTER);
-                    panel.add(closeButton, BorderLayout.SOUTH);
-
-                    Balloon popup = JBPopupFactory.getInstance().createDialogBalloonBuilder(panel, "Json Result").createBalloon();
-
-                    closeButton.addActionListener((e) -> {
-                        popup.dispose();
-                    });
-
-                    popup.showInCenterOf(editor.getContentComponent());
+                    SimplePopupMessage.get(result, "Json Result").showInCenterOf(editor.getContentComponent());
 
                 } catch (IOException e) {
                     Boolean isOk = new CustomDialogWrapper("Json Error", "An error has occurred: " + e.getMessage(), DialogType.ERROR).showAndGet();
