@@ -35,7 +35,7 @@ public class PopupDialog {
         JTextArea textArea = new JTextArea();
         textArea.setEditable(true);
         
-        JPanel buttonPanel = new JPanel(new BorderLayout(5,5));
+        JPanel buttonPanel = new JPanel(new FlowLayout());
         
         JButton okButton = new JButton("Process");
         okButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -43,19 +43,20 @@ public class PopupDialog {
             okButton.addActionListener(e -> onSubmit.accept(textArea.getText()));
         }
         
+        JButton closeButton = new JButton("Close");
+        
         buttonPanel.add(okButton);
+        buttonPanel.add(closeButton);
         
         panel.add(textArea, BorderLayout.CENTER);
         panel.add(buttonPanel, BorderLayout.SOUTH);
         
         Balloon popup = JBPopupFactory.getInstance().createDialogBalloonBuilder(panel, title).createBalloon();
         
+        closeButton.addActionListener(e -> popup.dispose());
+        
         textArea.setColumns(30);
         textArea.setRows(10);
-        
-        okButton.addActionListener((e) -> {
-            popup.dispose();
-        });
         
         return popup;
     }
