@@ -12,7 +12,7 @@ public final class AppUtils {
 		File file = new File(userPath + "/.StringHelpers");
 		
 		if(!file.exists()) file.mkdirs();
-		if(!file.exists()) throw new Exception("Can not access to user dir");
+		if(!file.exists()) throw new Exception("could not access user dir");
 		
 		return file.toPath();
 	}

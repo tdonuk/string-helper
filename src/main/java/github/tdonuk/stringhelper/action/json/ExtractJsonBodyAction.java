@@ -9,30 +9,19 @@ import com.intellij.openapi.editor.Caret;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.actionSystem.EditorAction;
 import com.intellij.openapi.editor.actionSystem.EditorActionHandler;
-import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
-import com.intellij.openapi.ui.popup.Balloon;
-import com.intellij.openapi.ui.popup.JBPopup;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
-import com.intellij.profile.codeInspection.ui.table.ScopesOrderTable;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.source.PsiClassReferenceType;
 import com.intellij.psi.util.PsiTreeUtil;
 import github.tdonuk.stringhelper.gui.CustomDialogWrapper;
 import github.tdonuk.stringhelper.gui.DialogType;
-import github.tdonuk.stringhelper.gui.SimplePopupMessage;
+import github.tdonuk.stringhelper.gui.PopupDialog;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.sql.Timestamp;
 import java.util.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ExtractJsonBodyAction extends EditorAction {
     private static final ObjectMapper mapper = new JsonMapper();
@@ -54,9 +43,16 @@ public class ExtractJsonBodyAction extends EditorAction {
                 Project project = ProjectManager.getInstance().getOpenProjects()[0];
 
                 PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
+                
+                if(psiFile == null) {
+                    new CustomDialogWrapper("Problem!", "You should open a proper class file to extract json body from its fields", DialogType.WARNING).showAndGet();
+                    return;
+                }
 
                 PsiClass psiClass = PsiTreeUtil.getParentOfType(psiFile.findElementAt(editor.getCaretModel().getOffset()), PsiClass.class);
 
+                if(psiClass == null) return;
+                
                 PsiField[] declaredFields = psiClass.getFields();
 
                 Map<String, Object> jsonFields = getFieldsOfObject(declaredFields);
@@ -67,7 +63,7 @@ public class ExtractJsonBodyAction extends EditorAction {
 
                     String result = writer.toString();
 
-                    SimplePopupMessage.get(result, "Json Result").showInCenterOf(editor.getContentComponent());
+                    PopupDialog.get(result, "Json Result").showInCenterOf(editor.getContentComponent());
 
                 } catch (IOException e) {
                     Boolean isOk = new CustomDialogWrapper("Json Error", "An error has occurred: " + e.getMessage(), DialogType.ERROR).showAndGet();

@@ -70,7 +70,7 @@
     <depends>com.intellij.modules.java</depends>
 
     <actions>
-        <group id="stringHelpers" text="String Helpers" description="Some useful string toolkits" popup="true">
+        <group id="stringHelpers" text="String Helpers" description="Some useful string toolkits" popup="true" icon="mainIcon.svg">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
             <add-to-group group-id="EditorPopupMenu"/>
 
@@ -99,6 +99,9 @@
 
             <separator text="Json"/>
             <action id="extractJsonAction" class="github.tdonuk.stringhelper.action.json.ExtractJsonBodyAction" text="Extract Json" description="Create initial Json body with initial values">
+
+            </action>
+            <action id="populateFromJson" class="github.tdonuk.stringhelper.action.json.PopulateWithJson" text="Populate With Json" description="Create java fields from a json">
 
             </action>
         </group>
