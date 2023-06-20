@@ -1,12 +1,10 @@
-import org.jetbrains.intellij.parsePluginXml
-
 plugins {
     id("java")
     id("org.jetbrains.intellij") version "1.10.1"
 }
 
 group = "github.tdonuk"
-version = "1.0.3"
+version = "1.0.4"
 
 repositories {
     mavenCentral()

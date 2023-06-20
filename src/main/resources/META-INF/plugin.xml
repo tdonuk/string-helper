@@ -7,7 +7,7 @@
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
     <name>String Helpers</name>
 
-    <version>1.0.3</version>
+    <version>1.0.4</version>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor url="https://github.com/tdonuk">tdonuk</vendor>
@@ -54,12 +54,19 @@
   ]]></description>
 
     <change-notes><![CDATA[
-    <p>Some bugfixes has done and error dialogs added</p>
+    <h2>v1.0.4 ("2023-06)</h2>
     <ul>
         <li>
-            <strong style="color: darkgreen;">New Feature:Json extract</strong>
+            <strong style="color: darkgreen;">New Feature: Json Generator</strong>
             <br/>
-            <p>Writes an example Json request string by declared fields in a class</p>
+            <p>Generates a pre-filled json body by reading fields of the currently opened class</p>
+        </li>
+    </ul>
+    <ul>
+        <li>
+            <strong style="color: darkgreen;">New Feature: Json Parser</strong>
+            <br/>
+            <p>Reads the given json as an object and scans its fields, then adds field declarations for these fields into currently opened class</p>
         </li>
     </ul>
  ]]></change-notes>
