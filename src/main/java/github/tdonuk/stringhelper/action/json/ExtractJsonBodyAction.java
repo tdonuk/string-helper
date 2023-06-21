@@ -3,7 +3,6 @@ package github.tdonuk.stringhelper.action.json;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.editor.Caret;
 import com.intellij.openapi.editor.Editor;
@@ -21,13 +20,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 public class ExtractJsonBodyAction extends EditorAction {
     private static final ObjectMapper mapper = new JsonMapper();
 
     static {
-        mapper.registerModule(new JavaTimeModule());
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         mapper.configure(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS, false);
     }
@@ -109,14 +110,14 @@ public class ExtractJsonBodyAction extends EditorAction {
         else if (typeName.startsWith("java.util.Date")) {
             return new java.util.Date();
         }
+        else if (typeName.startsWith("java.time.LocalDateTime")) {
+            return LocalDateTime.now().toString();
+        }
         else if (typeName.startsWith("java.time.LocalDate")) {
-            return java.time.LocalDate.now();
+            return LocalDate.now().toString();
         }
         else if (typeName.startsWith("java.time.LocalTime")) {
-            return java.time.LocalTime.now();
-        }
-        else if (typeName.startsWith("java.time.LocalDateTime")) {
-            return java.time.LocalDateTime.now();
+            return LocalTime.now().toString();
         }
         else if (typeName.startsWith("java.util.List") || typeName.startsWith("java.util.ArrayList")) {
             Object value = getInitialValueFromType(((PsiClassType) type).getParameters()[0]);
