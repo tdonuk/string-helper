@@ -120,22 +120,30 @@ public class ExtractJsonBodyAction extends EditorAction {
         }
         else if (typeName.startsWith("java.util.List") || typeName.startsWith("java.util.ArrayList")) {
             Object value = getInitialValueFromType(((PsiClassType) type).getParameters()[0]);
-            return List.of(value);
+            return Arrays.asList(value);
         }
         else if (typeName.startsWith("java.util.Map") || typeName.startsWith("java.util.HashMap")) {
             PsiType[] arguments = ((PsiClassType) type).getParameters();
             Object keyExample = getInitialValueFromType(arguments[0]);
             Object valueExample = getInitialValueFromType(arguments[1]);
-            return Map.of(keyExample, valueExample);
+            
+            Map<Object, Object> map = new HashMap<>();
+            map.put(keyExample, valueExample);
+            return map;
         }
         else if (typeName.startsWith("java.util.Set") || typeName.startsWith("java.util.HashSet")) {
             Object typeValue = getInitialValueFromType(((PsiClassType) type).getParameters()[0]);
-            return Set.of(typeValue);
+            Set<Object> set = new HashSet<>();
+            set.add(typeValue);
+            return set;
         }
         else {
             try {
                 PsiClassType classType = (PsiClassType) type;
                 PsiClass fieldClass = classType.resolve();
+                
+                if(fieldClass == null) return null;
+                
                 return getFieldsOfObject(fieldClass.getFields());
             } catch(Exception e) {
 
@@ -148,7 +156,7 @@ public class ExtractJsonBodyAction extends EditorAction {
         Map<String, Object> fields = new HashMap<>();
 
         for (PsiField field : declaredFields) {
-            if(Arrays.stream(field.getAnnotations()).filter(a -> a.getText().equals("@JsonIgnore")).findAny().isPresent()) continue;
+            if(Arrays.stream(field.getAnnotations()).anyMatch(a -> a.getText().equals("@JsonIgnore"))) continue;
 
             String fieldName = field.getName();
             PsiType fieldType = field.getType();

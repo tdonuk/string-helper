@@ -68,7 +68,7 @@ public class PopulateWithJson extends EditorAction {
 				PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(project);
 				
 				PopupDialog.getInput("Json", (json) -> {
-					if(json == null || ((String) json).isBlank()) return;
+					if(json == null || ((String) json).isEmpty()) return;
 					try {
 						WriteCommandAction.runWriteCommandAction(project, () -> {
 							Map<String, Object> jsonFields;
