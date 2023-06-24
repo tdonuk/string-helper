@@ -12,7 +12,6 @@ repositories {
 
 dependencies {
     // Other dependencies
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2")
 }
 
 // Configure Gradle IntelliJ Plugin

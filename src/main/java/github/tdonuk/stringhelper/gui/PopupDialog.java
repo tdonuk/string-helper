@@ -5,8 +5,6 @@ import com.intellij.openapi.ui.popup.JBPopupFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.function.Consumer;
 
 public class PopupDialog {
@@ -34,8 +32,12 @@ public class PopupDialog {
     public static Balloon getInput(String title, Consumer<Object> onSubmit) {
         JPanel panel = new JPanel(new BorderLayout());
         
+        JScrollPane scroll = new JScrollPane();
+        
         JTextArea textArea = new JTextArea();
         textArea.setEditable(true);
+        
+        scroll.setViewportView(textArea);
         
         JPanel buttonPanel = new JPanel(new FlowLayout());
         
@@ -50,7 +52,7 @@ public class PopupDialog {
         buttonPanel.add(okButton);
         buttonPanel.add(closeButton);
         
-        panel.add(textArea, BorderLayout.CENTER);
+        panel.add(scroll, BorderLayout.CENTER);
         panel.add(buttonPanel, BorderLayout.SOUTH);
         
         Balloon popup = JBPopupFactory.getInstance().createDialogBalloonBuilder(panel, title).createBalloon();

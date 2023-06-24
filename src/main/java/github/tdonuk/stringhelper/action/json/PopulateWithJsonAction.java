@@ -1,10 +1,8 @@
 package github.tdonuk.stringhelper.action.json;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Caret;
@@ -21,32 +19,21 @@ import github.tdonuk.stringhelper.gui.PopupDialog;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PopulateWithJson extends EditorAction {
-	private static final ObjectMapper mapper = new JsonMapper();
+public class PopulateWithJsonAction extends EditorAction {
+	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	
-	static {
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-		mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-		mapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
-		mapper.configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, false);
-		mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-		
-		SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		
-		mapper.setDateFormat(dateTimeFormat);
-	}
-	
-	protected PopulateWithJson(EditorActionHandler defaultHandler) {
+	protected PopulateWithJsonAction(EditorActionHandler defaultHandler) {
 		super(defaultHandler);
 	}
 	
-	protected PopulateWithJson() {
+	protected PopulateWithJsonAction() {
 		super(new EditorActionHandler() {
+			
 			@Override
 			protected void doExecute(@NotNull Editor editor, @Nullable Caret caret, DataContext dataContext) {
 				Project project = ProjectManager.getInstance().getOpenProjects()[0];
@@ -69,19 +56,20 @@ public class PopulateWithJson extends EditorAction {
 					if(json == null || ((String) json).isEmpty()) return;
 					try {
 						WriteCommandAction.runWriteCommandAction(project, () -> {
-							Map<String, Object> jsonFields;
-							try {
-								jsonFields = mapper.readValue((String) json, HashMap.class);
-							} catch(JsonProcessingException e) {
-								throw new RuntimeException(e);
-							}
+							TypeToken<HashMap<String, Object>> token = new TypeToken<HashMap<String, Object>>(){};
+							Map<Object, Object> jsonFields= gson.fromJson(((String) json), token.getType());
 							
-							for (Map.Entry<String, Object> entry : jsonFields.entrySet()) {
-								String fieldName = entry.getKey();
+							for (Map.Entry<Object, Object> entry : jsonFields.entrySet()) {
+								String fieldName = String.valueOf(entry.getKey());
 								Object fieldValue = entry.getValue();
 								
+								if(fieldValue instanceof Map) fieldValue = new Object();
+								if(fieldValue instanceof Collection<?>) fieldValue = new ArrayList<>();
+								
+								PsiClassType type = PsiType.getTypeByName(fieldValue.getClass().getCanonicalName(), project, GlobalSearchScope.projectScope(project));
+								
 								// Create the PsiField with the appropriate type and name
-								PsiField field = elementFactory.createField(fieldName, PsiType.getTypeByName(fieldValue.getClass().getSimpleName(), project, GlobalSearchScope.projectScope(project)));
+								PsiField field = elementFactory.createField(fieldName,type);
 								
 								// Set the field modifiers as needed (e.g., private, public, static)
 								field.getModifierList().setModifierProperty(PsiModifier.PRIVATE, true);

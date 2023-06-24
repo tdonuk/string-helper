@@ -46,9 +46,14 @@
             <p>Parses the selected text as epoch seconds and converts it to readable formatted text</p>
         </li>
         <li>
-            <strong>Json extract</strong>
+w            <strong>Generate Json</strong>
             <br/>
             <p>Writes an example Json request string by declared fields in a class</p>
+        </li>
+        <li>
+            <strong>Populate from Json</strong>
+            <br/>
+            <p>Declare fields in a class from given json</p>
         </li>
     </ul>
   ]]></description>
@@ -105,10 +110,10 @@
             <separator/>
 
             <separator text="Json"/>
-            <action id="extractJsonAction" class="github.tdonuk.stringhelper.action.json.ExtractJsonBodyAction" text="Extract Json" description="Create initial Json body with initial values">
+            <action id="generateJsonAction" class="github.tdonuk.stringhelper.action.json.GenerateJsonAction" text="Generate Json" description="Generate Json body with initial values">
 
             </action>
-            <action id="populateFromJson" class="github.tdonuk.stringhelper.action.json.PopulateWithJson" text="Populate With Json" description="Create java fields from a json">
+            <action id="populateFromJson" class="github.tdonuk.stringhelper.action.json.PopulateWithJsonAction" text="Populate With Json" description="Create java fields from a json">
 
             </action>
         </group>

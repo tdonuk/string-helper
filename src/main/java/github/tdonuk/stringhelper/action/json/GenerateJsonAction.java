@@ -1,8 +1,7 @@
 package github.tdonuk.stringhelper.action.json;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.editor.Caret;
 import com.intellij.openapi.editor.Editor;
@@ -18,26 +17,19 @@ import github.tdonuk.stringhelper.gui.PopupDialog;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
-public class ExtractJsonBodyAction extends EditorAction {
-    private static final ObjectMapper mapper = new JsonMapper();
+public class GenerateJsonAction extends EditorAction {
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    static {
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        mapper.configure(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS, false);
-    }
-
-    protected ExtractJsonBodyAction(EditorActionHandler defaultHandler) {
+    protected GenerateJsonAction(EditorActionHandler defaultHandler) {
         super(defaultHandler);
     }
 
-    protected ExtractJsonBodyAction() {
+    protected GenerateJsonAction() {
         super(new EditorActionHandler() {
             @Override
             protected void doExecute(@NotNull Editor editor, @Nullable Caret caret, DataContext dataContext) {
@@ -57,26 +49,17 @@ public class ExtractJsonBodyAction extends EditorAction {
                 PsiField[] declaredFields = psiClass.getFields();
 
                 Map<String, Object> jsonFields = getFieldsOfObject(declaredFields);
-
-                try {
-                    StringWriter writer = new StringWriter();
-                    mapper.writerWithDefaultPrettyPrinter().writeValue(writer, jsonFields);
-
-                    String result = writer.toString();
-
-                    PopupDialog.get(result, "Json Result").showInCenterOf(editor.getContentComponent());
-
-                } catch (IOException e) {
-                    Boolean isOk = new CustomDialogWrapper("Json Error", "An error has occurred: " + e.getMessage(), DialogType.ERROR).showAndGet();
-                    e.printStackTrace();
-                }
+                
+                String json = gson.toJson(jsonFields);
+                
+                PopupDialog.get(json, "Json Result").showInCenterOf(editor.getContentComponent());
             }
         });
     }
 
     private static Object getInitialValueFromType(PsiType type) {
         String typeName = type.getCanonicalText();
-
+        
         // handle array
         if(type instanceof PsiArrayType) {
             PsiArrayType arrayType = (PsiArrayType) type;
@@ -119,11 +102,22 @@ public class ExtractJsonBodyAction extends EditorAction {
         else if (typeName.startsWith("java.time.LocalTime")) {
             return LocalTime.now().toString();
         }
-        else if (typeName.startsWith("java.util.List") || typeName.startsWith("java.util.ArrayList")) {
-            Object value = getInitialValueFromType(((PsiClassType) type).getParameters()[0]);
-            return Arrays.asList(value);
+        else if (getSuperTypes(type).stream().anyMatch(t -> t.getCanonicalText().startsWith("java.util.Collection"))) {
+            PsiClassType classType = (PsiClassType) type;
+            Object value;
+            
+            if(classType.hasParameters()) value = getInitialValueFromType(classType.getParameters()[0]);
+            else value = "unknown array type";
+            
+            return Collections.singletonList(value);
         }
-        else if (typeName.startsWith("java.util.Map") || typeName.startsWith("java.util.HashMap")) {
+        else if (getSuperTypes(type).stream().anyMatch(t -> t.getCanonicalText().startsWith("java.util.Map"))) {
+            PsiClassType classType = (PsiClassType) type;
+            
+            if(!classType.hasParameters()) {
+                return new HashMap<>();
+            }
+            
             PsiType[] arguments = ((PsiClassType) type).getParameters();
             Object keyExample = getInitialValueFromType(arguments[0]);
             Object valueExample = getInitialValueFromType(arguments[1]);
@@ -131,12 +125,6 @@ public class ExtractJsonBodyAction extends EditorAction {
             Map<Object, Object> map = new HashMap<>();
             map.put(keyExample, valueExample);
             return map;
-        }
-        else if (typeName.startsWith("java.util.Set") || typeName.startsWith("java.util.HashSet")) {
-            Object typeValue = getInitialValueFromType(((PsiClassType) type).getParameters()[0]);
-            Set<Object> set = new HashSet<>();
-            set.add(typeValue);
-            return set;
         }
         else {
             try {
@@ -170,5 +158,19 @@ public class ExtractJsonBodyAction extends EditorAction {
         }
 
         return fields;
+    }
+    
+    private static Set<PsiType> getSuperTypes(PsiType type) {
+        if(type.getSuperTypes().length == 0) return new HashSet<>();
+        
+        PsiType[] superTypesArr = type.getSuperTypes();
+        
+        Set<PsiType> superTypes = new HashSet<>(Arrays.asList(superTypesArr));
+        
+        for(PsiType superType : superTypesArr) {
+            superTypes.addAll(getSuperTypes(superType));
+        }
+        
+        return superTypes;
     }
 }
