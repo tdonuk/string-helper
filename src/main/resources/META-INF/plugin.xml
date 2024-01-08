@@ -59,7 +59,7 @@
   ]]></description>
 
     <change-notes><![CDATA[
-    <h2>v1.0.4 (2024-01)</h2>
+    <h2>v1.0.5 (2024-01)</h2>
     <ul>
         <li>
             <strong style="color: darkgreen;">Bugfix: Character Encoding</strong>
