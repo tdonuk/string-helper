@@ -46,7 +46,7 @@
             <p>Parses the selected text as epoch seconds and converts it to readable formatted text</p>
         </li>
         <li>
-w            <strong>Generate Json</strong>
+            <strong>Generate Json</strong>
             <br/>
             <p>Writes an example Json request string by declared fields in a class</p>
         </li>
