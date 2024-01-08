@@ -35,8 +35,9 @@ public class Base64EncodeAction extends EditorAction {
 				final Document document = editor.getDocument();
 				
 				if (selectedText != null && !selectedText.isEmpty()) {
+					
 					try {
-						String result = StringUtil.convertLineSeparators(Base64.getEncoder().encodeToString(selectedText.getBytes(StandardCharsets.ISO_8859_1)));
+						String result = StringUtil.convertLineSeparators(new String(Base64.getEncoder().encode(selectedText.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8));
 						WriteCommandAction.runWriteCommandAction(openProjects[0], () -> {
 							if (!document.isWritable()) {
 								return;

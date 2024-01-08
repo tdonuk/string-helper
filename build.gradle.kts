@@ -22,14 +22,14 @@ intellij {
 
     plugins.set(listOf("com.intellij.java"))
 
-    updateSinceUntilBuild.set(false);
+    updateSinceUntilBuild.set(false)
 }
 
 tasks {
     // Set the JVM compatibility versions
     withType<JavaCompile> {
-        sourceCompatibility = "8"
-        targetCompatibility = "8"
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
     }
 
     signPlugin {
