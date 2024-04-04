@@ -17,6 +17,6 @@ Installation can be done in two ways:
 - Go to plugin home page: https://plugins.jetbrains.com/plugin/21446-string-helpers
 - Click the button 'Install to -IDE NAME-'
 
-this will redirect you to your IDE to complete installation.
+This will redirect you to your IDE to complete installation.
 
-alternatively, you can click 'Versions' at home page and download .jar file for any version you want.
+Alternatively, you can click 'Versions' at home page and download .jar file for any version you want, then load this jar as a plugin via plugins page in your JetBrains IDE.
