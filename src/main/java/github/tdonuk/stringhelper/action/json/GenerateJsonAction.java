@@ -48,11 +48,16 @@ public class GenerateJsonAction extends EditorAction {
                 
                 PsiField[] declaredFields = psiClass.getFields();
 
-                Map<String, Object> jsonFields = getFieldsOfObject(declaredFields);
-                
-                String json = gson.toJson(jsonFields);
-                
-                PopupDialog.get(json, "Json Result").showInCenterOf(editor.getContentComponent());
+                try {
+                    Map<String, Object> jsonFields = getFieldsOfObject(declaredFields);
+                    
+                    String json = gson.toJson(jsonFields);
+                    
+                    PopupDialog.get(json, "Json Result").showInCenterOf(editor.getContentComponent());
+                } catch(Exception e) {
+                    Boolean isOk = new CustomDialogWrapper("Serializing Error", "An error has occurred: " + e.getMessage(), DialogType.ERROR).showAndGet();
+                    // handle isOk
+                }
             }
         });
     }
@@ -135,8 +140,8 @@ public class GenerateJsonAction extends EditorAction {
                 
                 return getFieldsOfObject(fieldClass.getFields());
             } catch(Exception e) {
-
             }
+            
             return "unknown field type";
         }
     }
@@ -149,12 +154,8 @@ public class GenerateJsonAction extends EditorAction {
 
             String fieldName = field.getName();
             PsiType fieldType = field.getType();
-
-            for(PsiAnnotation an : field.getAnnotations()) {
-                if(an.getText().equals("@JsonIgnore")) continue;
-            }
-
-            fields.put(fieldName,getInitialValueFromType(fieldType));
+            
+            fields.put(fieldName, getInitialValueFromType(fieldType));
         }
 
         return fields;

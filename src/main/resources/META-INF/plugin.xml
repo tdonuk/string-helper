@@ -7,7 +7,7 @@
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
     <name>String Helpers</name>
 
-    <version>1.0.5</version>
+    <version>1.0.6</version>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor url="https://github.com/tdonuk">tdonuk</vendor>
@@ -55,11 +55,24 @@
             <br/>
             <p>Declare fields in a class from given json</p>
         </li>
+        <li>
+            <strong>Case Switching</strong>
+            <br/>
+            <p>Switch case of a string to uppercase, lowercase</p>
+        </li>
     </ul>
   ]]></description>
 
     <change-notes><![CDATA[
-    <h2>v1.0.5 (2024-01)</h2>
+    <h2>v1.0.6 (2024-06)</h2>
+    <ul>
+        <li>
+            <strong style="color: darkgreen;">New Feature: Case switching</strong>
+            <br/>
+            <p>Added a new feature that allows users to switch case of selected text to uppercase and to lowercase</p>
+        </li>
+    </ul>
+    <h2 style="margin-top: 10px;">v1.0.5 (2024-01)</h2>
     <ul>
         <li>
             <strong style="color: darkgreen;">Bugfix: Character Encoding</strong>
@@ -107,6 +120,14 @@
 
             </action>
             <action id="populateFromJson" class="github.tdonuk.stringhelper.action.json.PopulateWithJsonAction" text="Populate With Json" description="Create java fields from a json">
+
+            </action>
+
+            <separator text="Text"/>
+            <action id="makeUpperCaseAction" class="github.tdonuk.stringhelper.action.text.MakeUpperCaseAction" text="Uppercase" description="Make selected text uppercase">
+
+            </action>
+            <action id="makeLowerCaseAction" class="github.tdonuk.stringhelper.action.text.MakeLowerCaseAction" text="Lowercase" description="Make selected text lowercase">
 
             </action>
         </group>
