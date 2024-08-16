@@ -7,7 +7,7 @@
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
     <name>String Helpers</name>
 
-    <version>1.0.6</version>
+    <version>1.0.7</version>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor url="https://github.com/tdonuk">tdonuk</vendor>
@@ -64,6 +64,14 @@
   ]]></description>
 
     <change-notes><![CDATA[
+    <h2>v1.0.7 (2024-08)</h2>
+    <ul>
+        <li>
+            <strong style="color: darkgreen;">Bugfix: Enum fields in JSON generation</strong>
+            <br/>
+            <p>Fixed a bug that causes StackOverFlow error when serializing Enum fields with 'Generate JSON' action.</p>
+        </li>
+    </ul>
     <h2>v1.0.6 (2024-06)</h2>
     <ul>
         <li>

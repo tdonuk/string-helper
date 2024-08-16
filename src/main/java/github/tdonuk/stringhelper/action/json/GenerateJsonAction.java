@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class GenerateJsonAction extends EditorAction {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -138,11 +139,14 @@ public class GenerateJsonAction extends EditorAction {
                 
                 if(fieldClass == null) return null;
                 
+                if(fieldClass.isEnum()) {
+                    return Stream.of(fieldClass.getAllFields()).filter(f -> f instanceof PsiEnumConstant).map(PsiField::getName).findFirst().orElse("unknown enum type");
+                }
+                
                 return getFieldsOfObject(fieldClass.getFields());
             } catch(Exception e) {
+                return "unknown field type";
             }
-            
-            return "unknown field type";
         }
     }
 

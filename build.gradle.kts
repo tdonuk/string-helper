@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "github.tdonuk"
-version = "1.0.6"
+version = "1.0.7"
 
 repositories {
     mavenCentral()
@@ -17,7 +17,7 @@ dependencies {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2024.1")
+    version.set("2024.2")
     type.set("IC") // Target IDE Platform
 
     plugins.set(listOf("com.intellij.java"))
